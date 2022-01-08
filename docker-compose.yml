@@ -1,0 +1,26 @@
+version: "3.8"
+networks:
+  traefik_network:
+    external: true
+    name: ${TRAEFIK_PROVIDERS_DOCKER_NETWORK}
+
+services:
+  reverse-proxy:
+    image: "traefik:v2.5"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    networks:
+      - traefik_network
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.reverse-proxy.service=api@internal"
+      - "traefik.http.services.reverse-proxy.loadbalancer.server.port=8080"
+      - "traefik.http.routers.reverse-proxy.rule=Host(`traefik.${DOMAIN}`)"
