@@ -19,8 +19,11 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./config:/config/
+      - ./${SSL_DIR}:/ssl/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.reverse-proxy.service=api@internal"
       - "traefik.http.services.reverse-proxy.loadbalancer.server.port=8080"
+      - "traefik.http.routers.reverse-proxy.service=api@internal"
       - "traefik.http.routers.reverse-proxy.rule=Host(`traefik.${DOMAIN}`)"
+      - "traefik.http.routers.reverse-proxy.tls=true"
