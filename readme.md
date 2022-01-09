@@ -35,7 +35,7 @@ So traefik will be configured with all automatic features that you can adjust la
 
 ### Run your container
 
-So basically all you have to do is to run your container by adding them a docker label, then traefik will :
+So basically all you have to do is to run your container by adding them a docker label called `traefik.enable=true` in the service docker-compose file definition, then traefik will :
 * Detect the container automatically
 * Read its labels, if there is a label called traefik.enable wich is `true` then it will be reverse poxyfied
 * Traefik automatically detect exposed port and use it, if your container expose multiple port you will need to tell traefik wich one to use
